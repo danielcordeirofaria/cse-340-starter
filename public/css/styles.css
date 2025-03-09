@@ -9,6 +9,7 @@
 
   --color-dark-gray: #232232;
   --color-car-details: #01b0d3;
+  --color-backgoud: #01b0d314;
 }
 
 /************* Index Page **************/
@@ -17,7 +18,9 @@ html {
   height: 100%;
   margin: 0;
   padding: 0;
+  display: flex;
   font-family: 'Montserrat', sans-serif;
+  justify-content: center;
 }
 
 header {
@@ -29,7 +32,6 @@ header {
 
 body {
   background-size: cover;
-  background-repeat: no-repeat;
   margin: 0;
   padding: 0;
   display: flex;
@@ -81,10 +83,8 @@ h3 {
   text-decoration: underline;
 }
 
-/* Estilização da Navegação */
 nav {
   background-color: var(--color-dark-gray);
-  /* Fundo escuro como na imagem */
   width: 100%;
 }
 
@@ -131,7 +131,8 @@ main {
 }
 
 .vehicles_datails {
-  background: rgba(255, 255, 255, 0.7);
+
+  background: var(--color-backgoud);
   color: black;
   display: flex;
   flex-direction: column;
@@ -153,7 +154,6 @@ main {
 .btn-own-today {
   background-color: var(--color-car-details);
   color: var(--color-dark-gray);
-  /* Corrigido "vat" para "var" */
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 5px;
@@ -168,10 +168,8 @@ picture {
 
 .vehicles_image {
   height: auto;
-  /* Mantém a proporção */
   display: block;
   margin: 1rem;
-  /* Centraliza horizontalmente (alternativa ao flex do .vehicles) */
 }
 
 
@@ -188,6 +186,14 @@ picture {
   flex-direction: column;
   align-items: center;
   width: auto;
+  padding: 0 1rem;
+  background-color: var(--color-backgoud);
+  border-radius: 8px;
+}
+
+.car_upgrades{
+  background-color: var(--color-backgoud);
+  border-radius: 8px;
   padding: 0 1rem;
 }
 
@@ -211,16 +217,19 @@ picture {
 
 
 @media (min-width: 768px) {
+
+  #wrapper {
+    width: 80vw;
+  }
+
   .vehicles {
     flex-direction: row;
-    /* Desktop: imagem e detalhes lado a lado */
     justify-content: space-around;
     align-items: flex-start;
   }
 
   .vehicles_datails {
     position: absolute;
-    background: rgba(255, 255, 255, 0.7);
     color: black;
     display: flex;
     flex-direction: column;
@@ -268,7 +277,7 @@ picture {
     align-items: center;
   }
 
-  .reviews li{
+  .reviews li {
     margin-top: 1rem;
   }
 
@@ -281,27 +290,22 @@ picture {
 
   nav ul {
     justify-content: space-around;
-    /* Navegação mais espaçada */
   }
 
   nav ul li {
     padding: 15px;
-    /* Mais espaço nos itens da nav */
     font-size: 18px;
   }
 
   #top-header {
     padding: 20px 40px;
-    /* Mais espaço no header */
   }
 
   .siteName a {
     font-size: 2.5rem;
-    /* Aumenta o tamanho do título */
   }
 
   #tools a {
     font-size: 18px;
-    /* Aumenta o tamanho dos links de ferramentas */
   }
 }
