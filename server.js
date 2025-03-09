@@ -18,7 +18,7 @@ app.use(staticRoutes);
 
 // Index Route
 app.get("/", (req, res) => {
-  res.render("index", { title: "First Page" });
+  res.render("index", { title: "Home" });
 });
 
 /* Configuração do servidor */
