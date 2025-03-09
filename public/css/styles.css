@@ -66,7 +66,7 @@ h3 {
   color: var(--color-red);
 }
 
-h1{
+h1 {
   color: var(--color-red);
 }
 
@@ -122,10 +122,6 @@ main {
   margin-top: 20px;
 }
 
-.vehicles {
-  display: flex;
-}
-
 .reviews {
   display: flex;
   flex-direction: column;
@@ -161,6 +157,15 @@ main {
   color: var(--color-car-details);
 }
 
+.vehicles_reviews_upgrades {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+
 .btn-own-today {
   background-color: var(--color-red);
   color: white;
@@ -174,7 +179,8 @@ main {
 }
 
 .btn-own-today:hover {
-  transform: scale(1.1); /* Aumenta o botão em 10% */
+  transform: scale(1.1);
+  /* Aumenta o botão em 10% */
 }
 
 picture {
@@ -205,12 +211,13 @@ picture {
   padding: 0 1rem;
   background-color: var(--color-backgoud);
   border-radius: 8px;
+  margin-top: 2rem;
 }
 
-.car_upgrades{
+.car_upgrades {
   background-color: var(--color-backgoud);
   border-radius: 8px;
-  padding: 0 1rem;
+  margin-top: 2rem;
 }
 
 .upgrade {
@@ -271,7 +278,7 @@ picture {
   }
 
   .car_reviews {
-    margin-left: 2rem;
+    /* margin-left: 2rem; */
   }
 
   .car_review_upgrades {
@@ -283,6 +290,7 @@ picture {
   .car_upgrades {
     display: flex;
     flex-direction: column;
+    margin-top: 2rem;
   }
 
   .upgrade {
@@ -302,7 +310,7 @@ picture {
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
   }
 
   nav ul {
