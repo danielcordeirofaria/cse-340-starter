@@ -42,11 +42,6 @@ WHERE
     class.classification_name = 'Sport';
 
 
-
-ALTER TABLE inventory
-ADD COLUMN IF NOT EXISTS inv_image text,
-ADD COLUMN IF NOT EXISTS inv_thumbnail text;
-
 UPDATE inventory
 SET 
     inv_image = REPLACE(inv_image, '/images/', '/images/vehicles/'),
