@@ -3,10 +3,11 @@ const express = require("express");
 const env = require("dotenv").config();
 const expressLayouts = require("express-ejs-layouts");
 const app = express();
-const staticRoutes = require("./routes/static"); // Renomeei para evitar conflito
+const staticRoutes = require("./routes/static"); 
+const baseController = require("./controllers/baseController");
+const inventoryRoute = require("./routes/inventoryRoute"); // Adicionado
 
-/* Servir arquivos estáticos (CSS, imagens, etc.) */
-app.use(express.static("public")); // Adicione esta linha
+app.use(express.static("public")); 
 
 /* View Engine e Templates */
 app.set("view engine", "ejs");
@@ -15,11 +16,10 @@ app.set("layout", "./layouts/layout");
 
 /* Rotas */
 app.use(staticRoutes);
-
 // Index Route
-app.get("/", (req, res) => {
-  res.render("index", { title: "Home" });
-});
+app.get("/", baseController.buildHome);
+// Inventory routes
+app.use("/inv", inventoryRoute);
 
 /* Configuração do servidor */
 const port = process.env.PORT || 3000;
