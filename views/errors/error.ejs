@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title><%= title %></title>
-    <style>
-
-    </style>
-</head>
-<body>
+    <style></style>
+  </head>
+  <body>
     <h1><%= title %></h1>
-    <img src="./images/site/404.jpg" alt="Image of Erro">
+    <img
+      src="<%= status === 404 ? 'https://httpstatusdogs.com/img/404.jpg' : 'https://httpstatusdogs.com/img/500.jpg' %>"
+      alt="Image of Error"
+    />
     <p><%- message %></p>
-</body>
+  </body>
 </html>

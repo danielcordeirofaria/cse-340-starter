@@ -118,6 +118,11 @@ nav ul li:hover {
 
 }
 
+nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
 main {
   margin-top: 20px;
 }
