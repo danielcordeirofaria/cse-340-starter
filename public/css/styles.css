@@ -244,6 +244,12 @@ picture {
   font-weight: 700;
 }
 
+.form-text {
+  color: #666;
+  font-size: 0.9em;
+  margin-top: 5px;
+  display: block;
+}
 
 @media (min-width: 768px) {
 

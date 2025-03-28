@@ -1,0 +1,35 @@
+<main>
+  <h1>Login</h1>
+  <p>Please log in to your account.</p>
+
+  <%- messages() %>
+
+  <form action="/account/login" method="POST" class="login-form">
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        placeholder="Enter your email"
+      />
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        required
+        placeholder="Enter your password"
+        pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(.{12,})$"
+        title="Password must be at least 12 characters, including 1 uppercase letter, 1 number, and 1 special character."
+      />
+    </div>
+    <div class="form-buttons" style="display: flex; gap: 10px; margin-top: 15px;">
+      <button type="submit" class="btn-submit">Login</button>
+      <a href="/account/register" class="btn-register" >Register</a>
+    </div>
+  </form>
+</main>

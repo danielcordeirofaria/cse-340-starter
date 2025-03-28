@@ -1,0 +1,84 @@
+/******* Change Box Model ***************/
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+:root {
+  --color-red: #b82025;
+  --color-car-details: #b82025;
+  --color-backgoud: #b8202514;
+}
+
+/************* Registration Form (Mobile-First) **************/
+
+/* Estilos base para telas pequenas (mobile) */
+.register-form {
+  max-width: 90%; /* Mais fluido em telas pequenas */
+  margin: 15px auto;
+  padding: 0.75rem;
+  background-color: var(--color-backgoud);
+  border-radius: 8px;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.form-group {
+  margin-bottom: 0.75rem;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  color: var(--color-car-details);
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem; /* Menor para mobile */
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.4rem;
+  border: 1px solid var(--color-red);
+  border-radius: 5px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.9);
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--color-car-details);
+}
+
+
+
+/* Ajustes para telas maiores (desktop) */
+@media (min-width: 768px) {
+  .register-form {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-group label {
+    font-size: 1.2rem;
+  }
+
+  .form-group input {
+    padding: 0.75rem;
+    font-size: 1.1rem;
+  }
+
+  .btn-submit {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+  }
+}

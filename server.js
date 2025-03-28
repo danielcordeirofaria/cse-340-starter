@@ -14,6 +14,9 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const messages = require("express-messages");
 const pool = require("./database/");
+const accountRoute = require("./routes/accountRoute");
+const bodyParser = require("body-parser")
+
 
 // Logs para depuração
 console.log("session loaded:", !!session);
@@ -38,18 +41,20 @@ app.use(session({
     pool,
   }),
   secret: process.env.SESSION_SECRET || "fallback_secret",
-  resave: false, // Ajustado para melhor desempenho
-  saveUninitialized: false, // Ajustado para evitar sessões vazias
+  resave: false,
+  saveUninitialized: false,
   name: "sessionId",
 }));
 
-app.use(flash()); // Adiciona o connect-flash
-
+app.use(flash());
 app.use((req, res, next) => {
-  res.locals.messages = messages(req, res); // Configura express-messages
-  console.log("req.flash available:", typeof req.flash === "function"); // Depuração
+  res.locals.messages = messages(req, res); 
+  console.log("req.flash available:", typeof req.flash === "function"); 
   next();
 });
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 /* ***********************
  * Routes
@@ -57,15 +62,19 @@ app.use((req, res, next) => {
 app.use(staticRoutes);
 app.get("/", baseController.buildHome);
 app.use("/inv", inventoryRoute);
+app.use("/account", require("./routes/accountRoute"))
 app.get("/trigger-error", baseController.triggerError);
 
 app.use(async (req, res, next) => {
   next({ status: 404, message: "Sorry, we appear to have lost that page." });
 });
 
+
+
 /* ***********************
  * Express Error Handler
  *************************/
+
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav().catch((navErr) => {
     console.error("Erro ao carregar nav:", navErr);
@@ -92,3 +101,4 @@ const host = process.env.HOST || "localhost";
 app.listen(port, () => {
   console.log(`app listening on ${host}:${port}`);
 });
+

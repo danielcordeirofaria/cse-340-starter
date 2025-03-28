@@ -1,0 +1,117 @@
+/******* Change Box Model ***************/
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+:root {
+  --color-red: #b82025;
+  --color-car-details: #b82025;
+  --color-backgoud: #b8202514;
+}
+
+/************* Login Form **************/
+
+.login-form {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 1rem;
+  background-color: var(--color-backgoud);
+  border-radius: 8px;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  color: var(--color-car-details);
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  font-size: 1rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--color-red);
+  border-radius: 5px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.9);
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--color-car-details);
+}
+
+.btn-submit {
+  background-color: var(--color-red);
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  transition: transform 0.2s ease;
+}
+
+.btn-submit:hover, .btn-register:hover {
+  transform: scale(1.1);
+}
+
+.btn-register {
+  display: inline-block;
+  padding: 10px 20px;
+  text-decoration: none;
+  background: #f0f0f0;
+  border: 1px solid var(--color-red);
+  border-radius: 5px; 
+  color: var(--color-red);
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  transition: transform 0.2s ease;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+/* Responsividade */
+@media (min-width: 768px) {
+  .login-form {
+    max-width: 500px;
+    padding: 1.5rem;
+  }
+
+  .form-group label {
+    font-size: 1.2rem;
+  }
+
+  .form-group input {
+    padding: 0.75rem;
+    font-size: 1.1rem;
+  }
+
+  .btn-submit {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+  }
+}
