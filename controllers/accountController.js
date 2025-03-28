@@ -25,7 +25,7 @@ accountController.processLogin = async function (req, res, next) {
 accountController.buildRegister = async function (req, res, next) {
   try {
     let nav = await utilities.getNav();
-    res.render("account/register", { title: "Register", nav });
+    res.render("account/register", { title: "Register", nav, errors: null, });
   } catch (error) {
     next(error);
   }
@@ -59,8 +59,7 @@ async function registerAccount(req, res) {
     account_password,
   } = req.body;
 
-  const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(.{12,})$/;
-  if (!passwordRegex.test(account_password)) {
+  const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$/;  if (!passwordRegex.test(account_password)) {
     req.flash(
       "notice",
       "Password must be at least 12 characters, including 1 uppercase letter, 1 number, and 1 special character (!@#$%^&*)."
@@ -98,6 +97,18 @@ async function registerAccount(req, res) {
       nav,
     });
   }
+}
+
+/* ****************************************
+*  Deliver registration view
+* *************************************** */
+async function buildRegister(req, res, next) {
+  let nav = await utilities.getNav()
+  res.render("account/register", {
+    title: "Register",
+    nav,
+    errors: null,
+  })
 }
 
 accountController.registerAccount = registerAccount;

@@ -54,7 +54,13 @@
   border-color: var(--color-car-details);
 }
 
+input:required:invalid, input:focus:invalid {
+  border: 3px solid var(--color-red);
+ }
 
+.span_password{
+  font-size: 0.75rem;
+}
 
 /* Ajustes para telas maiores (desktop) */
 @media (min-width: 768px) {

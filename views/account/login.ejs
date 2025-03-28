@@ -23,9 +23,8 @@
         name="password"
         required
         placeholder="Enter your password"
-        pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(.{12,})$"
-        title="Password must be at least 12 characters, including 1 uppercase letter, 1 number, and 1 special character."
-      />
+        pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
+        />
     </div>
     <div class="form-buttons" style="display: flex; gap: 10px; margin-top: 15px;">
       <button type="submit" class="btn-submit">Login</button>
