@@ -1,0 +1,16 @@
+<% if (messages && messages.success) { %>
+<div class="flash-message success">
+  <p><%= messages.success %></p>
+</div>
+<% } %> <% if (messages && messages.error) { %>
+<div class="flash-message error">
+  <p><%= messages.error %></p>
+</div>
+<% } %>
+
+<section class="management-links">
+  <a href="/inv/add-classification" class="btn-new-classification"
+    >Add New Classification</a
+  >
+  <a href="/inv/add-inventory" class="btn-new-inventory">Add New Inventory</a>
+</section>

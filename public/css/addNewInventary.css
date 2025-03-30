@@ -1,0 +1,171 @@
+/******* Change Box Model ***************/
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+:root {
+    --color-red: #b82025;
+    --color-car-details: #b82025;
+    --color-backgoud: #b8202514;
+}
+
+/************* Inventory Form (Mobile-First) **************/
+.inventory-form {
+    max-width: 90%;
+    margin: 15px auto;
+    padding: 0.75rem;
+    background-color: var(--color-backgoud);
+    border-radius: 8px;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.inventory-form h1 {
+    color: var(--color-red);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.inventory-form-group {
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.inventory-form-group label {
+    display: block;
+    color: var(--color-car-details);
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+}
+
+.inventory-form-group input,
+.inventory-form-group select,
+.inventory-form-group textarea {
+    width: 100%;
+    padding: 0.4rem;
+    border: 1px solid var(--color-red);
+    border-radius: 5px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    color: #333;
+    background-color: rgba(255, 255, 255, 0.9);
+    transition: border-color 0.2s ease;
+}
+
+.inventory-form-group input:focus,
+.inventory-form-group select:focus,
+.inventory-form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-car-details);
+}
+
+.inventory-form-group input:required:invalid,
+.inventory-form-group input:focus:invalid,
+.inventory-form-group select:required:invalid,
+.inventory-form-group select:focus:invalid,
+.inventory-form-group textarea:required:invalid,
+.inventory-form-group textarea:focus:invalid {
+    border: 3px solid var(--color-red);
+}
+
+.inventory-form button {
+    background-color: var(--color-red);
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    transition: transform 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.inventory-form button:hover {
+    transform: scale(1.1);
+}
+
+.flash-message {
+    padding: 0.5rem;
+    margin-bottom: 0.75rem;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.flash-message.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.flash-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.error-messages {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 0.5rem;
+    margin-bottom: 0.75rem;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.error-messages ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.error-messages li {
+    margin-bottom: 0.25rem;
+}
+
+@media (min-width: 768px) {
+    .inventory-form {
+        max-width: 500px;
+        margin: 20px auto;
+        padding: 1.5rem;
+    }
+
+    .inventory-form h1 {
+        font-size: 2rem;
+    }
+
+    .inventory-form-group {
+        margin-bottom: 1rem;
+    }
+
+    .inventory-form-group label {
+        font-size: 1.2rem;
+    }
+
+    .inventory-form-group input,
+    .inventory-form-group select,
+    .inventory-form-group textarea {
+        padding: 0.75rem;
+        font-size: 1.1rem;
+    }
+
+    .inventory-form button {
+        padding: 0.75rem 1.5rem;
+        font-size: 1.1rem;
+    }
+
+    .flash-message {
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .error-messages {
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+    }
+}

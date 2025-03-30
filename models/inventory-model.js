@@ -1,7 +1,7 @@
-// All Data interactions are stored in the model of the M-V-C appraoch.
+// All Data interactions are stored in the model of the M-V-C approach.
 // This file will have functions that interact with the tables `classification` and `inventory`
 
-const pool = require("../database/")
+const pool = require("../database/");
 
 /* ***************************
  *  Get all classification data
@@ -53,4 +53,50 @@ async function getVehicleById(inventory_id) {
   }
 }
 
-module.exports = { getClassifications, getInventoryByClassificationId, getVehicleById };
+/* ***************************
+ *  Add new classification
+ * ************************** */
+async function addClassification(classification_name) {
+  try {
+    const sql = "INSERT INTO public.classification (classification_name) VALUES ($1) RETURNING *";
+    const result = await pool.query(sql, [classification_name]);
+    return result.rows[0]; // Retorna o registro inserido
+  } catch (error) {
+    console.error("addClassification error:", error);
+    throw error; // Propaga o erro para o controlador
+  }
+}
+
+/* ***************************
+ *  Add new inventory item
+ * ************************** */
+async function addInventory({
+  classification_id,
+  inv_make,
+  inv_model,
+  inv_description,
+  inv_image,
+  inv_thumbnail,
+  inv_price,
+  inv_year,
+  inv_miles,
+  inv_color,
+}) {
+  try {
+    const sql = `
+      INSERT INTO public.inventory (
+        classification_id, inv_make, inv_model, inv_description, 
+        inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`;
+    const result = await pool.query(sql, [
+      classification_id, inv_make, inv_model, inv_description,
+      inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color
+    ]);
+    return result.rowCount > 0; // Retorna true se inserido com sucesso
+  } catch (error) {
+    console.error("addInventory error:", error);
+    throw error;
+  }
+}
+
+module.exports = { getClassifications, getInventoryByClassificationId, getVehicleById, addClassification, addInventory };
