@@ -1,0 +1,87 @@
+#edit-inventory-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 80vw;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    text-align: center;
+    padding: 20px;
+    margin: 20px auto;
+}
+
+.edit-inventory-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.edit-field {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.edit-field label {
+    font-weight: 700;
+    color: var(--color-red);
+    margin-bottom: 5px;
+}
+
+.edit-field input,
+.edit-field textarea,
+.edit-field select {
+    padding: 8px;
+    border: 1px solid var(--color-red);
+    border-radius: 5px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.edit-field textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.required-notice {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+.notice.success {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.edit-submit {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.classifications_button {
+    background-color: var(--color-red);
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0.25rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.classifications_button:hover {
+    transform: scale(1.1);
+}

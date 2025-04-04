@@ -1,0 +1,134 @@
+<main id="edit-inventory-wrapper">
+    <h1><%= title %></h1>
+  
+    <% if (messages && messages.notice) { %>
+      <p class="notice <%= messages.notice.includes('Sorry') ? 'error' : 'success' %>">
+        <%= messages.notice %>
+      </p>
+    <% } %>
+  
+    <% if (errors) { %>
+      <ul class="errors">
+        <% errors.forEach(error => { %>
+          <li><%= error.msg %></li>
+        <% }) %>
+      </ul>
+    <% } %>
+  
+    <form action="/inv/update" method="post" class="edit-inventory-form">
+      <p class="required-notice">All fields are required.</p>
+  
+      <div class="edit-field">
+        <label for="classification_id">Classification:</label>
+        <%- classificationSelect %>
+      </div>
+  
+      <div class="edit-field">
+        <label for="inv_make">Make:</label>
+        <input
+          type="text"
+          name="inv_make"
+          id="inv_make"
+          value="<%= locals.inv_make || '' %>"
+          required
+        >
+      </div>
+  
+      <div class="edit-field">
+        <label for="inv_model">Model:</label>
+        <input
+          type="text"
+          name="inv_model"
+          id="inv_model"
+          value="<%= locals.inv_model || '' %>"
+          required
+        >
+      </div>
+  
+      <div class="edit-field">
+        <label for="inv_description">Description:</label>
+        <textarea
+          name="inv_description"
+          id="inv_description"
+          required
+        ><%= locals.inv_description || '' %></textarea>
+      </div>
+  
+      <div class="edit-field">
+        <label for="inv_image">Image Path:</label>
+        <input
+          type="text"
+          name="inv_image"
+          id="inv_image"
+          value="<%= locals.inv_image || '/images/vehicles/no-image.jpg' %>"
+          required
+        >
+      </div>
+  
+      <div class="edit-field">
+        <label for="inv_thumbnail">Thumbnail Path:</label>
+        <input
+          type="text"
+          name="inv_thumbnail"
+          id="inv_thumbnail"
+          value="<%= locals.inv_thumbnail || '/images/vehicles/no-image-tn.jpg' %>"
+          required
+        >
+      </div>
+  
+      <div class="edit-field">
+        <label for="inv_price">Price:</label>
+        <input
+          type="number"
+          name="inv_price"
+          id="inv_price"
+          value="<%= locals.inv_price || '' %>"
+          required
+          step="0.01"
+        >
+      </div>
+  
+      <div class="edit-field">
+        <label for="inv_year">Year:</label>
+        <input
+          type="number"
+          name="inv_year"
+          id="inv_year"
+          value="<%= locals.inv_year || '' %>"
+          required
+        >
+      </div>
+  
+      <div class="edit-field">
+        <label for="inv_miles">Miles:</label>
+        <input
+          type="number"
+          name="inv_miles"
+          id="inv_miles"
+          value="<%= locals.inv_miles || '' %>"
+          required
+        >
+      </div>
+  
+      <div class="edit-field">
+        <label for="inv_color">Color:</label>
+        <input
+          type="text"
+          name="inv_color"
+          id="inv_color"
+          value="<%= locals.inv_color || '' %>"
+          required
+        >
+      </div>
+  
+      <input
+        type="hidden"
+        name="inv_id"
+        <% if (locals.inv_id) { %> value="<%= locals.inv_id %>" <% } %>
+      >
+  
+      <div class="edit-submit">
+        <button type="submit" class="classifications_button">Update Vehicle</button>
+      </div>
+    </form>
+  </main>

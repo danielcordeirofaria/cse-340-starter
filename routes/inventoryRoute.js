@@ -3,27 +3,7 @@ const express = require("express");
 const router = new express.Router();
 const invController = require("../controllers/invController");
 const utilities = require("../utilities");
-const { body } = require("express-validator");
-
-// Middleware de validação para adicionar classificação
-const validateClassification = [
-  body("classification_name")
-    .trim()
-    .matches(/^[A-Za-z0-9]+$/)
-    .withMessage("Classification name must contain only letters and numbers, no spaces or special characters."),
-];
-
-// Middleware de validação para adicionar inventário
-const validateInventory = [
-  body("classification_id").isInt().withMessage("Please select a valid classification."),
-  body("inv_make").matches(/^[A-Za-z0-9]{3,}$/).withMessage("Make must be at least 3 characters, letters and numbers only."),
-  body("inv_model").matches(/^[A-Za-z0-9]{3,}$/).withMessage("Model must be at least 3 characters, letters and numbers only."),
-  body("inv_description").isLength({ min: 10 }).withMessage("Description must be at least 10 characters."),
-  body("inv_price").isFloat({ min: 0 }).withMessage("Price must be a positive number."),
-  body("inv_year").isInt({ min: 1900, max: new Date().getFullYear() }).withMessage("Year must be between 1900 and current year."),
-  body("inv_miles").isInt({ min: 0 }).withMessage("Miles cannot be negative."),
-  body("inv_color").matches(/^[A-Za-z]{3,}$/).withMessage("Color must be at least 3 letters, letters only."),
-];
+const validate = require("../utilities/inventory-validation"); // Importa o arquivo de validação
 
 // Route to build inventory management view
 router.get("/", invController.buildManagementView);
@@ -40,8 +20,9 @@ router.get("/add-classification", invController.buildAddClassification);
 // Route to process add classification
 router.post(
   "/add-classification",
-  validateClassification,
-  utilities.handleErrors(invController.addClassification)
+  validate.classificationRules(), // Regras de validação para nova classificação
+  validate.checkClassificationData, // Verifica dados e retorna erros para add-classification
+  utilities.handleErrors(invController.addClassification) // Trata erros do controlador
 );
 
 // Route to build add inventory view
@@ -50,8 +31,29 @@ router.get("/add-inventory", invController.buildAddInventory);
 // Route to process add inventory
 router.post(
   "/add-inventory",
-  validateInventory,
-  utilities.handleErrors(invController.addInventory)
+  validate.newInventoryRules(), // Regras de validação para novo inventário
+  validate.checkInventoryData, // Verifica dados e retorna erros para add-inventory
+  utilities.handleErrors(invController.addInventory) // Trata erros do controlador
+);
+
+// Route to get inventory as JSON
+router.get(
+  "/getInventory/:classification_id",
+  utilities.handleErrors(invController.getInventoryJSON)
+);
+
+// Route to build edit inventory view
+router.get(
+  "/edit/:inventory_id",
+  utilities.handleErrors(invController.buildEditInventoryView)
+);
+
+// Route to process update inventory
+router.post(
+  "/update/",
+  validate.newInventoryRules(), // Regras de validação para atualização de inventário
+  validate.checkUpdateData, // Verifica dados e retorna erros para edit-inventory
+  utilities.handleErrors(invController.updateInventory) // Trata erros do controlador
 );
 
 module.exports = router;

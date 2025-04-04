@@ -213,7 +213,6 @@ main {
 
 .btn-own-today:hover {
   transform: scale(1.1);
-  /* Aumenta o botão em 10% */
 }
 
 picture {
@@ -309,7 +308,7 @@ picture {
 h2 a {
   color: var(--color-red);
   text-decoration: none;
-  transition: all 0.3s ease-in-out; 
+  transition: all 0.3s ease-in-out;
 }
 
 h2 a:hover {
@@ -323,6 +322,90 @@ h2 a:hover {
   flex-direction: column;
   justify-content: flex-start;
 }
+
+#classificationList {
+  border: 1px solid var(--color-red);
+  border-radius: 5px;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.select_classification {
+  color: var(--color-red);
+}
+
+.classifications_button {
+  background-color: var(--color-red);
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0.25rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.classifications_button:hover {
+  transform: scale(1.1);
+}
+
+/* Estilização para a grade de cards */
+#inventoryDisplay {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Estilização para cada card */
+.inventory-card {
+  border-radius: 5px;
+  padding: 1rem;
+  text-align: center;
+  background-color: #fff;
+  width: 15rem;
+  border: 1px solid var(--color-red);
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Estilização da imagem */
+.inventory-card .thumbnail {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+/* Estilização do título do veículo */
+.inventory-card h3 {
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+
+/* Estilização dos botões */
+.card-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.card-buttons .button {
+  display: inline-block;
+  padding: 8px 15px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.card-buttons .button:hover {
+  background-color: #0056b3;
+}
+
+
 
 @media (min-width: 768px) {
 
