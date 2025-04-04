@@ -1,4 +1,6 @@
 const invModel = require("../models/inventory-model");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 const Util = {};
 
 /* ************************
@@ -41,14 +43,12 @@ Util.buildClassificationGrid = async function (data) {
       grid += `<span>$${new Intl.NumberFormat("en-US").format(vehicle.inv_price)}</span>`;
       grid += `</div>`;
       grid += `</li>`;
-      // grid += `<hr />`;
-
     });
     grid += `</ul>`;
   } else {
     grid = `<p class="notice">Sorry, no matching vehicles could be found.</p>`;
   }
-  console.log("Generated grid HTML:", grid); // Log para depuração
+  console.log("Generated grid HTML:", grid);
   return grid;
 };
 
@@ -98,6 +98,45 @@ Util.buildClassificationList = async function (classification_id = null) {
  **************************************** */
 Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
 
+/* ****************************************
+ * Middleware to check token validity
+ **************************************** */
+Util.checkJWTToken = (req, res, next) => {
+  if (req.cookies.jwt) {
+    jwt.verify(
+      req.cookies.jwt,
+      process.env.ACCESS_TOKEN_SECRET,
+      function (err, accountData) {
+        if (err) {
+          req.flash("notice", "Please log in");
+          res.clearCookie("jwt");
+          return res.redirect("/account/login");
+        }
+        res.locals.accountData = accountData;
+        res.locals.loggedin = 1;
+        next();
+      }
+    );
+  } else {
+    next();
+  }
+};
+
+/* ****************************************
+ * Check Login
+ * ************************************ */
+Util.checkLogin = (req, res, next) => {
+  if (res.locals.loggedin) {
+    next();
+  } else {
+    req.flash("notice", "Please log in.");
+    return res.redirect("/account/login");
+  }
+};
+
+/* ****************************************
+ * Apply handleErrors to async functions
+ **************************************** */
 Util.getNav = Util.handleErrors(Util.getNav);
 Util.buildClassificationGrid = Util.handleErrors(Util.buildClassificationGrid);
 Util.buildVehicleDetailHTML = Util.handleErrors(Util.buildVehicleDetailHTML);
