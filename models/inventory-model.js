@@ -90,6 +90,7 @@ async function addInventory({
       inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color
     ]);
     return result.rowCount > 0;
+  } catch (error) {
     console.error("addInventory error:", error);
     throw error;
   }

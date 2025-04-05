@@ -1,6 +1,5 @@
   <h1>Add New Classification</h1>
   <%- nav %>
-  <!-- Exibir mensagens flash -->
   <% if (messages && messages.success) { %>
   <div class="flash-message success">
     <p><%= messages.success %></p>
@@ -11,7 +10,6 @@
   </div>
   <% } %>
 
-  <!-- Exibir erros de validação do servidor -->
   <% if (errors && errors.length > 0) { %>
   <div class="error-messages">
     <ul>
@@ -22,7 +20,6 @@
   </div>
   <% } %>
 
-  <!-- Formulário para adicionar nova classificação -->
   <form
     id="addClassificationForm"
     action="/inv/add-classification"

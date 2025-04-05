@@ -92,7 +92,7 @@ validate.checkLoginData = async (req, res, next) => {
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav();
     res.render("account/login", {
-      errors: errors.array(), // Convertido para array aqui
+      errors: errors.array(),
       title: "Login",
       nav,
       account_email,
