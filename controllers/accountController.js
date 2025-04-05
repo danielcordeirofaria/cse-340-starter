@@ -44,12 +44,24 @@ accountController.accountLogin = async function (req, res, next) {
   try {
     if (await bcrypt.compare(account_password, accountData.account_password)) {
       delete accountData.account_password;
-      const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 });
-      if (process.env.NODE_ENV === "development") {
-        res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 });
-      } else {
-        res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 });
-      }
+      const accessToken = jwt.sign(
+        accountData,
+        process.env.ACCESS_TOKEN_SECRET || "your-secret-key",
+        { expiresIn: "1h" }
+      );
+      console.log("JWT gerado:", accessToken);
+
+      res.cookie("jwt", accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== "development",
+        maxAge: 3600 * 1000,
+        sameSite: "Lax",
+      });
+      console.log("Cookie 'jwt' definido com sucesso");
+
+      res.locals.loggedin = true;
+      res.locals.accountData = accountData;
+
       return res.redirect("/account/");
     } else {
       req.flash("notice", "Please check your credentials and try again.");
@@ -61,6 +73,7 @@ accountController.accountLogin = async function (req, res, next) {
       });
     }
   } catch (error) {
+    console.error("Erro no login:", error);
     next(error);
   }
 };
@@ -89,10 +102,9 @@ accountController.registerAccount = async function (req, res, next) {
     let nav = await utilities.getNav();
     const { account_firstname, account_lastname, account_email, account_password } = req.body;
 
-    // Hash the password before storing
     let hashedPassword;
     try {
-      hashedPassword = await bcrypt.hashSync(account_password, 10);
+      hashedPassword = await bcrypt.hash(account_password, 10);
     } catch (error) {
       req.flash("notice", "Sorry, there was an error processing the registration.");
       return res.status(500).render("account/register", {
@@ -146,11 +158,27 @@ accountController.registerAccount = async function (req, res, next) {
 accountController.buildAccountManagement = async function (req, res, next) {
   try {
     let nav = await utilities.getNav();
+    const accountData = res.locals.accountData || {};
     res.render("account/management", {
       title: "Account Management",
       nav,
       errors: null,
+      account_firstname: accountData.account_firstname || "Guest",
+      account_type: accountData.account_type || "Unknown",
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/* ****************************************
+ *  Process Logout
+ * *************************************** */
+accountController.logout = async function (req, res, next) {
+  try {
+    res.clearCookie("jwt");
+    req.flash("notice", "You have been logged out.");
+    res.redirect("/account/login");
   } catch (error) {
     next(error);
   }

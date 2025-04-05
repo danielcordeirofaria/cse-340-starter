@@ -1,0 +1,76 @@
+<main id="edit-inventory-wrapper">
+  <h1><%= title %></h1>
+
+  <% if (messages && messages.notice) { %>
+    <p class="notice <%= messages.notice.includes('Sorry') ? 'error' : 'success' %>">
+      <%= messages.notice %>
+    </p>
+  <% } %>
+
+  <% if (errors) { %>
+    <ul class="errors">
+      <% errors.forEach(error => { %>
+        <li><%= error.msg %></li>
+      <% }) %>
+    </ul>
+  <% } %>
+
+  <form action="/inv/delete" method="post" class="edit-inventory-form">
+    <p>Confirm Deletion - The delete is permanent.</p>
+
+    <div class="edit-field">
+      <label for="inv_make">Make:</label>
+      <input
+        type="text"
+        name="inv_make"
+        id="inv_make"
+        value="<%= locals.inv_make || '' %>"
+        readonly
+      >
+    </div>
+
+    <div class="edit-field">
+      <label for="inv_model">Model:</label>
+      <input
+        type="text"
+        name="inv_model"
+        id="inv_model"
+        value="<%= locals.inv_model || '' %>"
+        readonly
+      >
+    </div>
+
+    <div class="edit-field">
+      <label for="inv_year">Year:</label>
+      <input
+        type="number"
+        name="inv_year"
+        id="inv_year"
+        value="<%= locals.inv_year || '' %>"
+        readonly
+      >
+    </div>
+
+    <div class="edit-field">
+      <label for="inv_price">Price:</label>
+      <input
+        type="number"
+        name="inv_price"
+        id="inv_price"
+        value="<%= locals.inv_price || '' %>"
+        step="0.01"
+        readonly
+      >
+    </div>
+
+    <input
+      type="hidden"
+      name="inv_id"
+      <% if (locals.inv_id) { %> value="<%= locals.inv_id %>" <% } %>
+    >
+
+    <div class="edit-submit">
+      <button type="submit" class="classifications_button">Delete Vehicle</button>
+    </div>
+  </form>
+</main>

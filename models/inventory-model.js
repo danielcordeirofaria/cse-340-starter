@@ -1,6 +1,3 @@
-// All Data interactions are stored in the model of the M-V-C approach.
-// This file will have functions that interact with the tables `classification` and `inventory`
-
 const pool = require("../database/");
 
 /* ***************************
@@ -13,7 +10,7 @@ async function getClassifications() {
     );
   } catch (error) {
     console.error("getClassifications error:", error);
-    throw error; // Propaga o erro para o controlador
+    throw error;
   }
 }
 
@@ -60,10 +57,10 @@ async function addClassification(classification_name) {
   try {
     const sql = "INSERT INTO public.classification (classification_name) VALUES ($1) RETURNING *";
     const result = await pool.query(sql, [classification_name]);
-    return result.rows[0]; // Retorna o registro inserido
+    return result.rows[0];
   } catch (error) {
     console.error("addClassification error:", error);
-    throw error; // Propaga o erro para o controlador
+    throw error; 
   }
 }
 
@@ -92,8 +89,7 @@ async function addInventory({
       classification_id, inv_make, inv_model, inv_description,
       inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color
     ]);
-    return result.rowCount > 0; // Retorna true se inserido com sucesso
-  } catch (error) {
+    return result.rowCount > 0;
     console.error("addInventory error:", error);
     throw error;
   }
@@ -142,10 +138,24 @@ async function updateInventory({
       inv_color,
       inv_id
     ]);
-    return result.rowCount > 0; // Retorna true se atualizado com sucesso
+    return result.rowCount > 0;
   } catch (error) {
     console.error("updateInventory error:", error);
     throw error;
+  }
+}
+
+/* ***************************
+ *  Delete inventory item
+ * ************************** */
+async function deleteInventoryItem(inv_id) {
+  try {
+    const sql = "DELETE FROM public.inventory WHERE inv_id = $1";
+    const data = await pool.query(sql, [inv_id]);
+    return data;
+  } catch (error) {
+    console.error("deleteInventoryItem error:", error);
+    throw new Error("Delete Inventory Error");
   }
 }
 
@@ -155,5 +165,6 @@ module.exports = {
   getVehicleById, 
   addClassification, 
   addInventory, 
-  updateInventory 
+  updateInventory,
+  deleteInventoryItem
 };

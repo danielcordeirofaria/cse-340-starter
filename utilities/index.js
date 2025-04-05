@@ -126,6 +126,7 @@ Util.checkJWTToken = (req, res, next) => {
  * Check Login
  * ************************************ */
 Util.checkLogin = (req, res, next) => {
+  console.log("Valor de res.locals.loggedin em checkLogin:", res.locals.loggedin);
   if (res.locals.loggedin) {
     next();
   } else {

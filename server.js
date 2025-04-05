@@ -2,7 +2,6 @@
  * Require Statements
  *************************/
 const express = require("express");
-// require("dotenv").config();
 const env = require("dotenv").config();
 const expressLayouts = require("express-ejs-layouts");
 const app = express();
@@ -17,13 +16,14 @@ const accountRoute = require("./routes/accountRoute");
 const pool = require("./database/");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
 
 // Logs para depuração
 console.log("baseController loaded:", !!baseController);
 console.log("session loaded:", !!session);
 console.log("flash loaded:", !!flash);
 console.log("messages loaded:", !!messages);
-
+console.log("jwt loaded:", !!jwt);
 
 /* ***********************
  * View Engine and Templates
@@ -50,15 +50,34 @@ app.use(session({
 
 app.use(flash());
 app.use((req, res, next) => {
-  res.locals.messages = messages(req, res); 
-  console.log("req.flash available:", typeof req.flash === "function"); 
+  res.locals.messages = messages(req, res);
+  console.log("req.flash available:", typeof req.flash === "function");
   next();
 });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(utilities.checkJWTToken);
+
+app.use((req, res, next) => {
+  const token = req.cookies.jwt;
+  console.log("Verificando cookie JWT na requisição para:", req.originalUrl);
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET || "your-secret-key");
+      res.locals.loggedin = true;
+      res.locals.accountData = decoded;
+      console.log("JWT validado com sucesso para:", decoded.account_email);
+    } catch (err) {
+      res.locals.loggedin = false;
+      console.log("JWT inválido ou expirado:", err.message);
+    }
+  } else {
+    res.locals.loggedin = false;
+    console.log("Nenhum JWT encontrado nos cookies para:", req.originalUrl);
+  }
+  next();
+});
 
 /* ***********************
  * Routes
@@ -69,7 +88,6 @@ app.use("/inv", inventoryRoute);
 app.use("/account", accountRoute);
 app.get("/trigger-error", utilities.handleErrors(baseController.triggerError));
 
-// Middleware para 404 (página não encontrada)
 app.use(async (req, res, next) => {
   next({ status: 404, message: "Sorry, we appear to have lost that page." });
 });
@@ -80,7 +98,7 @@ app.use(async (req, res, next) => {
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav().catch((navErr) => {
     console.error("Erro ao carregar nav:", navErr);
-    return ""; 
+    return "";
   });
   console.error(`Error at: "${req.originalUrl}": ${err.message}`);
   console.error(`Full stack: ${err.stack}`);
