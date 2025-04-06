@@ -1,0 +1,96 @@
+<h1 class="page-title">Update Account</h1>
+<% if (errors && errors.length > 0) { %>
+<ul class="errors error-list">
+  <% errors.forEach(error => { %>
+  <li class="error-item"><%= error.msg %></li>
+  <% }) %>
+</ul>
+<% } %> <% if (messages.notice) { %>
+<p class="notice notice-text"><%= messages.notice %></p>
+<% } %>
+
+<form
+  id="accountUpdateForm"
+  class="form-container"
+  action="/account/update"
+  method="POST"
+>
+  <fieldset class="form-fieldset">
+    <legend class="form-legend">Account Update</legend>
+
+    <div class="form-group">
+      <label for="account_firstname" class="form-label">First Name:</label>
+      <input
+        type="text"
+        id="account_firstname"
+        name="account_firstname"
+        class="input-field"
+        value="<%= locals.account_firstname || '' %>"
+        required
+        placeholder="Enter your first name"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="account_lastname" class="form-label">Last Name:</label>
+      <input
+        type="text"
+        id="account_lastname"
+        name="account_lastname"
+        class="input-field"
+        value="<%= locals.account_lastname || '' %>"
+        required
+        placeholder="Enter your last name"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="account_email" class="form-label">Email:</label>
+      <input
+        type="email"
+        id="account_email"
+        name="account_email"
+        class="input-field"
+        value="<%= locals.account_email || '' %>"
+        required
+        placeholder="Enter your email"
+      />
+    </div>
+
+    <input type="hidden" name="account_id" value="<%= locals.account_id %>" />
+    <input type="submit" class="btn btn-primary" value="Update Account" />
+  </fieldset>
+</form>
+
+<form
+  id="passwordChangeForm"
+  class="form-container"
+  action="/account/update-password"
+  method="POST"
+>
+  <fieldset class="form-fieldset">
+    <legend class="form-legend">Change Password</legend>
+    <p class="form-info">
+      Enter a new password to replace your current one. It must be at least 12
+      characters long, including at least 1 uppercase letter, 1 number, and 1
+      special character (e.g., !@#$%^&*).
+    </p>
+
+    <div class="form-group">
+      <label for="account_password" class="form-label">New Password:</label>
+      <input
+        type="password"
+        id="account_password"
+        name="account_password"
+        class="input-field"
+        required
+        pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{12,}$"
+        title="Password must be at least 12 characters with 1 uppercase, 1 number, and 1 special character."
+        placeholder="Enter new password"
+      />
+    </div>
+
+    <input type="hidden" name="account_id" value="<%= locals.account_id %>" />
+    <input type="submit" class="btn btn-primary" value="Change Password" />
+  </fieldset>
+</form>

@@ -143,4 +143,19 @@ Util.buildClassificationGrid = Util.handleErrors(Util.buildClassificationGrid);
 Util.buildVehicleDetailHTML = Util.handleErrors(Util.buildVehicleDetailHTML);
 Util.buildClassificationList = Util.handleErrors(Util.buildClassificationList);
 
+/* ****************************************
+ * Middleware to check account type (Employee or Admin)
+ **************************************** */
+Util.checkAdminAccess = (req, res, next) => {
+  console.log("Verificando acesso administrativo para:", req.originalUrl);
+  if (res.locals.loggedin && (res.locals.accountData.account_type === "Employee" || res.locals.accountData.account_type === "Admin")) {
+    console.log("Acesso administrativo concedido para:", res.locals.accountData.account_email);
+    next();
+  } else {
+    req.flash("notice", "You must be an Employee or Admin to access this page. Please log in with appropriate credentials.");
+    console.log("Acesso administrativo negado para:", res.locals.accountData?.account_email || "usuário não logado");
+    res.redirect("/account/login");
+  }
+};
+
 module.exports = Util;

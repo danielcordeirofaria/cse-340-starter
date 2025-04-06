@@ -172,13 +172,128 @@ accountController.buildAccountManagement = async function (req, res, next) {
 };
 
 /* ****************************************
+ *  Deliver Update Account View
+ * *************************************** */
+accountController.buildUpdateAccount = async function (req, res, next) {
+  try {
+    const account_id = parseInt(req.params.account_id);
+    if (account_id !== res.locals.accountData.account_id) {
+      req.flash("notice", "You can only update your own account.");
+      return res.redirect("/account/");
+    }
+    let nav = await utilities.getNav();
+    res.render("account/update", {
+      title: "Update Account",
+      nav,
+      errors: null,
+      account_firstname: res.locals.accountData.account_firstname,
+      account_lastname: res.locals.accountData.account_lastname,
+      account_email: res.locals.accountData.account_email,
+      account_id: account_id,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/* ****************************************
+ *  Process Account Update
+ * *************************************** */
+accountController.updateAccount = async function (req, res, next) {
+  try {
+    const { account_id, account_firstname, account_lastname, account_email } = req.body;
+    const result = await accountModel.updateAccountInfo(
+      parseInt(account_id),
+      account_firstname,
+      account_lastname,
+      account_email
+    );
+
+    if (result.rowCount > 0) {
+      const updatedAccount = await accountModel.getAccountById(parseInt(account_id));
+      delete updatedAccount.account_password;
+      const accessToken = jwt.sign(
+        updatedAccount,
+        process.env.ACCESS_TOKEN_SECRET || "your-secret-key",
+        { expiresIn: "1h" }
+      );
+      res.cookie("jwt", accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== "development",
+        maxAge: 3600 * 1000,
+        sameSite: "Lax",
+      });
+      res.locals.accountData = updatedAccount;
+      req.flash("notice", "Account updated successfully!");
+      return res.redirect("/account/");
+    } else {
+      throw new Error("Failed to update account.");
+    }
+  } catch (error) {
+    let nav = await utilities.getNav();
+    res.status(500).render("account/update", {
+      title: "Update Account",
+      nav,
+      errors: [{ msg: error.message }],
+      account_firstname: req.body.account_firstname,
+      account_lastname: req.body.account_lastname,
+      account_email: req.body.account_email,
+      account_id: req.body.account_id,
+    });
+  }
+};
+
+/* ****************************************
+ *  Process Password Update
+ * *************************************** */
+accountController.updatePassword = async function (req, res, next) {
+  try {
+    const { account_id, account_password } = req.body;
+    const hashedPassword = await bcrypt.hash(account_password, 10);
+    const result = await accountModel.updatePassword(parseInt(account_id), hashedPassword);
+
+    if (result.rowCount > 0) {
+      const updatedAccount = await accountModel.getAccountById(parseInt(account_id));
+      delete updatedAccount.account_password;
+      const accessToken = jwt.sign(
+        updatedAccount,
+        process.env.ACCESS_TOKEN_SECRET || "your-secret-key",
+        { expiresIn: "1h" }
+      );
+      res.cookie("jwt", accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== "development",
+        maxAge: 3600 * 1000,
+        sameSite: "Lax",
+      });
+      res.locals.accountData = updatedAccount;
+      req.flash("notice", "Password updated successfully!");
+      return res.redirect("/account/");
+    } else {
+      throw new Error("Failed to update password.");
+    }
+  } catch (error) {
+    let nav = await utilities.getNav();
+    res.status(500).render("account/update", {
+      title: "Update Account",
+      nav,
+      errors: [{ msg: error.message }],
+      account_firstname: res.locals.accountData.account_firstname,
+      account_lastname: res.locals.accountData.account_lastname,
+      account_email: res.locals.accountData.account_email,
+      account_id: req.body.account_id,
+    });
+  }
+};
+
+/* ****************************************
  *  Process Logout
  * *************************************** */
 accountController.logout = async function (req, res, next) {
   try {
     res.clearCookie("jwt");
     req.flash("notice", "You have been logged out.");
-    res.redirect("/account/login");
+    res.redirect("/");
   } catch (error) {
     next(error);
   }

@@ -4,11 +4,10 @@ const utilities = require("../utilities");
 const accountController = require("../controllers/accountController");
 const validate = require("../utilities/account-validation");
 
-// Route to build the account management view (GET) - com middleware JWT e checkLogin
+// Route to build the account management view (GET)
 router.get(
-  "/", 
-  utilities.checkJWTToken, 
-  utilities.checkLogin, 
+  "/",
+  utilities.checkLogin,
   utilities.handleErrors(accountController.buildAccountManagement)
 );
 
@@ -33,5 +32,33 @@ router.post(
   validate.checkLoginData,
   utilities.handleErrors(accountController.accountLogin)
 );
+
+// Route to build the update account view (GET)
+router.get(
+  "/update/:account_id",
+  utilities.checkLogin,
+  utilities.handleErrors(accountController.buildUpdateAccount)
+);
+
+// Process the account update (POST)
+router.post(
+  "/update",
+  utilities.checkLogin,
+  validate.accountUpdateRules(),
+  validate.checkAccountUpdateData,
+  utilities.handleErrors(accountController.updateAccount)
+);
+
+// Process the password update (POST)
+router.post(
+  "/update-password",
+  utilities.checkLogin,
+  validate.passwordUpdateRules(),
+  validate.checkPasswordUpdateData,
+  utilities.handleErrors(accountController.updatePassword)
+);
+
+// Route to process logout (GET)
+router.get("/logout", utilities.handleErrors(accountController.logout));
 
 module.exports = router;
