@@ -7,27 +7,30 @@ const Util = {};
  * Constructs the nav HTML unordered list
  ************************** */
 Util.getNav = async function () {
-  const data = await invModel.getClassifications();
-  let list = `<ul class="navigation__list">`;
-  list += `<li><a href="/" class="navigation__list--item">Home</a></li>`;
+  let data = await invModel.getClassifications();
+  let list = "<ul>";
+  list += '<li><a href="/" title="Home page">Home</a></li>';
   data.rows.forEach((row) => {
-    list += `<li>`;
-    list += `<a href="/inv/type/${row.classification_id}" class="navigation__list--item">${row.classification_name}</a>`;
-    list += `</li>`;
+    list += `
+      <li>
+        <a href="/inv/type/${row.classification_id}" title="See our inventory of ${row.classification_name} vehicles">
+          ${row.classification_name}
+        </a>
+      </li>`;
   });
-  list += `</ul>`;
+  list += '<li><a href="/inv/ranking" title="View vehicle rankings">Rankings</a></li>';
+  list += "</ul>";
   return list;
 };
 
 /* **************************************
  * Build the classification view HTML
  * ************************************ */
-Util.buildClassificationGrid = async function (data) {
+Util.buildRankingGrid = async function (data) {
   let grid;
   if (data.length > 0) {
     grid = `<ul id="inv-display">`;
-    data.forEach((vehicle) => {
-      // Escapar os valores para evitar quebra de HTML
+    data.forEach((vehicle, index) => {
       const safeMake = String(vehicle.inv_make).replace(/"/g, '"').replace(/</g, '<').replace(/>/g, '>');
       const safeModel = String(vehicle.inv_model).replace(/"/g, '"').replace(/</g, '<').replace(/>/g, '>');
       const safeThumbnail = String(vehicle.inv_thumbnail).replace(/"/g, '"');
@@ -38,17 +41,19 @@ Util.buildClassificationGrid = async function (data) {
       grid += `</a>`;
       grid += `<div class="namePrice">`;
       grid += `<h2>`;
+      grid += `<span class="rank">#${index + 1}</span> `;
       grid += `<a href="../../inv/detail/${vehicle.inv_id}" title="View ${safeMake} ${safeModel} details">${safeMake} ${safeModel}</a>`;
       grid += `</h2>`;
       grid += `<span>$${new Intl.NumberFormat("en-US").format(vehicle.inv_price)}</span>`;
+      grid += `<p>Likes: <span id="likes-${vehicle.inv_id}">${vehicle.inv_likes || 0}</span></p>`;
       grid += `</div>`;
       grid += `</li>`;
     });
     grid += `</ul>`;
   } else {
-    grid = `<p class="notice">Sorry, no matching vehicles could be found.</p>`;
+    grid = `<p class="notice">No vehicles have been liked yet.</p>`;
   }
-  console.log("Generated grid HTML:", grid);
+  console.log("Generated ranking grid HTML:", grid);
   return grid;
 };
 

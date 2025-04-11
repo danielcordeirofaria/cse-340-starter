@@ -1,0 +1,22 @@
+<h1><%= title %></h1>
+<%- grid %>
+<script>
+  async function likeVehicle(inv_id) {
+    try {
+      const response = await fetch("/inv/like", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ inv_id }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        document.getElementById(`likes-${inv_id}`).textContent = data.likes;
+      } else {
+        alert(data.error);
+      }
+    } catch (error) {
+      alert("Error liking the vehicle");
+    }
+  }
+</script>
+<%- include('../partials/footer') %>

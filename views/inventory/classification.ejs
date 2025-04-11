@@ -1,3 +1,29 @@
 <% if (title) { %>
-<h1><%= title %></h1>
-<% } else { res.redirect('/') } %> <%# messages() %> <%- grid %>
+    <h1><%= title %></h1>
+  <% } else { res.redirect('/') } %>
+  <%# messages() %>
+  <%- grid %>
+  <script>
+    async function likeVehicle(inv_id) {
+      if (!Number.isInteger(inv_id) || inv_id <= 0) {
+        alert("Invalid vehicle ID");
+        return;
+      }
+  
+      try {
+        const response = await fetch("/inv/like", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ inv_id }),
+        });
+        const data = await response.json();
+        if (data.success) {
+          document.getElementById(`likes-${inv_id}`).textContent = data.likes;
+        } else {
+          alert(data.error);
+        }
+      } catch (error) {
+        alert("Error liking the vehicle");
+      }
+    }
+  </script>

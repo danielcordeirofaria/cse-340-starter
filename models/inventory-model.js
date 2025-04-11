@@ -160,6 +160,45 @@ async function deleteInventoryItem(inv_id) {
   }
 }
 
+/* ***************************
+ *  Increment likes for a vehicle
+ * ************************** */
+async function incrementLikes(inv_id) {
+  try {
+    const sql = `
+      UPDATE public.inventory
+      SET inv_likes = inv_likes + 1
+      WHERE inv_id = $1
+      RETURNING inv_likes`;
+    const data = await pool.query(sql, [inv_id]);
+    return data.rows[0];
+  } catch (error) {
+    console.error("incrementLikes error:", error);
+    throw error;
+  }
+}
+
+/* ***************************
+ *  Get ranking of vehicles by likes
+ * ************************** */
+async function getRanking(limit = 10) {
+  try {
+    const data = await pool.query(
+      `SELECT i.*, c.classification_name 
+       FROM public.inventory AS i 
+       JOIN public.classification AS c 
+       ON i.classification_id = c.classification_id 
+       ORDER BY i.inv_likes DESC 
+       LIMIT $1`,
+      [limit]
+    );
+    return data.rows;
+  } catch (error) {
+    console.error("getRanking error:", error);
+    throw error;
+  }
+}
+
 module.exports = { 
   getClassifications, 
   getInventoryByClassificationId, 
@@ -167,5 +206,7 @@ module.exports = {
   addClassification, 
   addInventory, 
   updateInventory,
-  deleteInventoryItem
+  deleteInventoryItem,
+  incrementLikes,
+  getRanking
 };

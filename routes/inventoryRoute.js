@@ -6,16 +6,26 @@ const utilities = require("../utilities");
 const validate = require("../utilities/inventory-validation");
 
 // Route to build inventory by classification view (pública)
-router.get("/type/:classificationId", invController.buildByClassificationId);
+router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId));
 
 // Route for vehicle detail view (pública)
-router.get("/detail/:inventoryId", invController.buildVehicleDetail);
+router.get("/detail/:inventoryId", utilities.handleErrors(invController.buildVehicleDetail));
 
 // Route to build inventory management view (protegida - apenas Employee/Admin)
-router.get("/", utilities.checkLogin, utilities.checkAdminAccess, invController.buildManagementView);
+router.get(
+  "/",
+  utilities.checkLogin,
+  utilities.checkAdminAccess,
+  utilities.handleErrors(invController.buildManagementView)
+);
 
 // Route to build add classification view (protegida - apenas Employee/Admin)
-router.get("/add-classification", utilities.checkLogin, utilities.checkAdminAccess, invController.buildAddClassification);
+router.get(
+  "/add-classification",
+  utilities.checkLogin,
+  utilities.checkAdminAccess,
+  utilities.handleErrors(invController.buildAddClassification)
+);
 
 // Route to process add classification (protegida - apenas Employee/Admin)
 router.post(
@@ -28,7 +38,12 @@ router.post(
 );
 
 // Route to build add inventory view (protegida - apenas Employee/Admin)
-router.get("/add-inventory", utilities.checkLogin, utilities.checkAdminAccess, invController.buildAddInventory);
+router.get(
+  "/add-inventory",
+  utilities.checkLogin,
+  utilities.checkAdminAccess,
+  utilities.handleErrors(invController.buildAddInventory)
+);
 
 // Route to process add inventory (protegida - apenas Employee/Admin)
 router.post(
@@ -80,6 +95,18 @@ router.post(
   utilities.checkLogin,
   utilities.checkAdminAccess,
   utilities.handleErrors(invController.deleteInventory)
+);
+
+// Route to like a vehicle (pública - qualquer usuário)
+router.post(
+  "/like",
+  utilities.handleErrors(invController.likeVehicle)
+);
+
+// Route to build ranking view (pública)
+router.get(
+  "/ranking",
+  utilities.handleErrors(invController.buildRankingView)
 );
 
 module.exports = router;

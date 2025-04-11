@@ -376,4 +376,48 @@ invCont.deleteInventory = async function (req, res, next) {
   }
 };
 
+/* ***************************
+ *  Like a vehicle
+ * ************************** */
+invCont.likeVehicle = async function (req, res, next) {
+  try {
+    const inv_id = parseInt(req.body.inv_id);
+    if (!inv_id) {
+      throw { status: 400, message: "Invalid vehicle ID." };
+    }
+    const vehicle = await invModel.getVehicleById(inv_id);
+    if (!vehicle) {
+      throw { status: 404, message: "Vehicle not found." };
+    }
+    const likeData = await invModel.incrementLikes(inv_id);
+    res.json({ success: true, likes: likeData.inv_likes });
+  } catch (error) {
+    console.error("likeVehicle error:", error);
+    res.status(error.status || 500).json({ error: error.message || "Failed to like vehicle." });
+  }
+};
+
+/* ***************************
+ *  Build ranking view
+ * ************************** */
+invCont.buildRankingView = async function (req, res, next) {
+  try {
+    let nav = await utilities.getNav();
+    const vehicles = await invModel.getRanking();
+    if (!vehicles || vehicles.length === 0) {
+      throw { status: 404, message: "No vehicles found for ranking." };
+    }
+    const grid = await utilities.buildRankingGrid(vehicles); // Nova função
+    res.render("./inventory/ranking", {
+      title: "Vehicle Rankings",
+      nav,
+      grid,
+      messages: req.flash(),
+      errors: null,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = invCont;
